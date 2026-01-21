@@ -6,6 +6,11 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
+
+const { diagnosticsMiddleware } = require("./middleware/diagnostics");
+app.use(diagnosticsMiddleware);
+
+
 require('./endpoints/users')(app);
 require('./endpoints/orders')(app);
 

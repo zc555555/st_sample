@@ -1,0 +1,59 @@
+# Performance Test for PR-01 and PR-02 Requirements
+# PR-01: GET / p95 latency < 100ms at 25 req/s for 60s, error rate < 1%
+# PR-02: POST /login p95 latency < 300ms at 10 VUs for 60s, error rate < 1%
+
+config:
+  target: "http://localhost:3000"
+  processor: "./performance-helper.js"
+  plugins:
+    expect: {}
+  # Enable detailed metrics
+  statsInterval: 5
+  # Phase 1: PR-01 and PR-02 - 25 req/s for 60 seconds
+  phases:
+    - name: "PR-01/PR-02 Load Test"
+      duration: 60
+      arrivalRate: 25  # 25 requests per second
+      maxVusers: 50    # Maximum concurrent virtual users
+
+scenarios:
+  # PR-01: Test GET / endpoint performance
+  - name: "PR-01: GET / Health Check Performance"
+    weight: 60  # 60% of traffic
+    flow:
+      - get:
+          url: "/"
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - hasProperty: message
+
+  # PR-02: Test POST /login endpoint performance
+  - name: "PR-02: POST /login Performance"
+    weight: 40  # 40% of traffic
+    flow:
+      # First, ensure test user exists (registration)
+      - post:
+          url: "/register"
+          beforeRequest: generateUniqueSignupData
+          json:
+            name: "{{ name }}"
+            email: "{{ email }}"
+            password: "{{ password }}"
+            address: "{{ address }}"
+          expect:
+            - statusCode:
+                - 201
+                - 409  # OK if user already exists
+
+      # Then test login performance (use same email/password just generated)
+      - post:
+          url: "/login"
+          json:
+            email: "{{ email }}"
+            password: "{{ password }}"
+          expect:
+            - statusCode: 200
+            - contentType: json
+            - hasProperty: accessToken
+

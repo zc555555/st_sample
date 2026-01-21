@@ -153,6 +153,13 @@ module.exports = (app) => {
       }
       const { userID } = req.params;
       const userFound = await User.findOne({ _id: userID });
+
+      if (!userFound) {
+        return res.status(404).json({
+          "message": "User not found."
+        });
+      }
+
       if(userFound.role === "Admin") {
         return res.status(403).json({
             "message": "Unauthorized Access - Admins can not delete admins."
@@ -173,7 +180,7 @@ module.exports = (app) => {
   /* Get information of self user. */
   app.get("/me", authenticateToken, async (req, res) => {
     try {
-      const userFound = await User.findOne({ _id: req.user.id });
+      const userFound = await User.findOne({ _id: req.user.id }).select('-password');
       return res.status(200).json(userFound);
     } catch(error) {
       console.log(error);

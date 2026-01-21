@@ -1,0 +1,3 @@
+﻿NAME        IMAGE     COMMAND                  SERVICE     CREATED         STATUS         PORTS
+mongo       mongo     "docker-entrypoint.sΓÇª"   mongo       2 minutes ago   Up 2 minutes   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+st-sample   sample    "docker-entrypoint.sΓÇª"   st-sample   2 minutes ago   Up 2 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp

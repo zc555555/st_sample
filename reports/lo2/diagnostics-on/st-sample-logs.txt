@@ -1,0 +1,7 @@
+﻿st-sample  | [dotenv@17.2.3] injecting env (8) from .env -- tip: ΓÜÖ∩╕Å  load multiple .env files with { path: ['.env.local', '.env'] }
+st-sample  | [dotenv@17.2.3] injecting env (0) from .env -- tip: ΓÜÖ∩╕Å  load multiple .env files with { path: ['.env.local', '.env'] }
+st-sample  | [dotenv@17.2.3] injecting env (0) from .env -- tip: ≡ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
+st-sample  | [dotenv@17.2.3] injecting env (0) from .env -- tip: ΓÜÖ∩╕Å  load multiple .env files with { path: ['.env.local', '.env'] }
+st-sample  | Server started on port 3000.
+st-sample  | {"event":"http_request","ts":"2026-01-19T16:00:36.090Z","requestId":"e8d588f64145ddbf","method":"GET","path":"/","statusCode":200,"durationMs":1.51}
+st-sample  | {"event":"http_request","ts":"2026-01-19T16:00:46.649Z","requestId":"d4511cbca0036aaa","method":"GET","path":"/","statusCode":200,"durationMs":0.26}
