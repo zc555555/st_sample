@@ -1,13 +1,10 @@
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 require('dotenv').config();
 
 const user = require("../models/user");
 const User = user.User;
-
-const order = require("../models/order");
-const Order = order.Order;
 
 const {authenticateToken} = require("./auth");
 
@@ -28,7 +25,7 @@ module.exports = (app) => {
     // If user exists (email), prevent insertion.
     const userExists = await User.exists({ email: req.body.email });
     if(!userExists) {
-      let data = { ...req.body };
+      const data = { ...req.body };
       data.password = bcrypt.hashSync(req.body.password, 8);
       const newUser = new User(data);  
       const insertedUser = await newUser.save();
@@ -63,7 +60,7 @@ module.exports = (app) => {
         }
 
         //Compare passwords.
-        var passwordIsValid = bcrypt.compareSync(
+        const passwordIsValid = bcrypt.compareSync(
           req.body.password,
           user.password
         );
@@ -75,7 +72,7 @@ module.exports = (app) => {
           });
         }
         //signing token with user id (utilizing API secret).
-        var token = jwt.sign({
+        const token = jwt.sign({
           id: user.id
         }, process.env.API_SECRET, {
           expiresIn: 86400
@@ -168,7 +165,7 @@ module.exports = (app) => {
 
       const userDeleted = await User.findByIdAndDelete(userID);
       return res.status(200).json(userDeleted);
-    } catch(error) {
+    } catch(_error) {
       return res.status(400).json({
         "message": "Bad Request."
       });

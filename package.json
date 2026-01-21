@@ -4,6 +4,8 @@
   "description": "Software Testing 2022-23 Sample Test Project",
   "main": "server.js",
   "scripts": {
+    "lint": "eslint endpoints/ middleware/ models/ server.js",
+    "lint:fix": "eslint endpoints/ middleware/ models/ server.js --fix",
     "test-unit": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config -- __tests__/app/app.unit.test.js --forceExit",
     "test-performance": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config -- __tests__/app/app.performance.test.js",
     "test-db": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config -- __tests__/db/db.test.js --forceExit",
@@ -11,6 +13,7 @@
     "test-api-simple": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config -- __tests__/api/api.users-simple.test.js --forceExit",
     "test-api-generic": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config -- __tests__/api/api.users-generic.test.js --forceExit",
     "test": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config  --forceExit && node db-cleanup.js",
+    "test:coverage": "DOTENV_CONFIG_PATH=.env jest --setupFiles dotenv/config --coverage --forceExit",
     "performance": "artillery run __tests__/performance/performance-test.yml --output performance.json && node db-cleanup.js",
     "report": "artillery report --output performance.html performance.json"
   },
@@ -31,13 +34,17 @@
     "dotenv": "latest",
     "express": "^4.19.2",
     "express-flash": "latest",
-    "jsonwebtoken": "latest",
     "express-jwt": "^8.4.1",
     "express-session": "latest",
     "express-validator": "latest",
     "jest": "latest",
     "jest-measure": "latest",
+    "jsonwebtoken": "latest",
     "jwks-rsa": "latest",
     "mongoose": "^6.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-plugin-security": "^3.0.1"
   }
 }

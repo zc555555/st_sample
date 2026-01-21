@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const user = require("../models/user");
 const User = user.User;
@@ -9,8 +9,8 @@ const User = user.User;
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-  
-  if (token == null){
+
+  if (token === null){
     return res.sendStatus(401);
   }
   jwt.verify(token, process.env.API_SECRET, (error, user) => {

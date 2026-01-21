@@ -35,9 +35,9 @@ module.exports = (app) => {
   /* Get orders of user. */
   app.get("/orders/all", authenticateToken, async (req, res) => {
     try{
-      let allOrders = await Order.find({ user : req.user.id });
+      const allOrders = await Order.find({ user : req.user.id });
       return res.status(200).json(allOrders);
-    } catch(error) {
+    } catch(_error) {
       console.log(error);
       return res.status(400).json({
         "message": "Bad Request."
@@ -64,8 +64,8 @@ module.exports = (app) => {
         return res.status(404).json({
           "message": "No order found."
         });
-      }    
-    } catch(error) {
+      }
+    } catch(_error) {
       return res.status(400).json({
         "message": "Bad Request."
       });
@@ -138,7 +138,7 @@ module.exports = (app) => {
 
       const orderDeleted = await Order.findByIdAndDelete(orderID);
       return res.status(200).json(orderDeleted);
-    } catch(error) {
+    } catch(_error) {
       return res.status(400).json({
         "message": "Bad Request."
       });
