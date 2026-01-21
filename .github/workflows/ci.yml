@@ -1,0 +1,102 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Lint, Test, and Coverage
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Create .env file for CI
+      run: |
+        echo "DB_ENDPOINT=mongodb://localhost:27017/test" > .env
+        echo "API_SECRET=test_secret_key_for_ci" >> .env
+        echo "PORT=3000" >> .env
+        echo "BASE_URL=http://127.0.0.1" >> .env
+        echo "URL_POSTFIX=" >> .env
+        echo "TEST_FLAG=true" >> .env
+        echo "DIAGNOSTICS=true" >> .env
+
+    - name: Run ESLint
+      run: npm run lint
+      continue-on-error: true
+
+    - name: Start server in background
+      run: |
+        node server.js > server.log 2>&1 &
+        SERVER_PID=$!
+        echo $SERVER_PID > server.pid
+        sleep 10
+        echo "Server PID: $SERVER_PID"
+        cat server.log || true
+        curl http://127.0.0.1:3000/ || echo "Server not ready, check logs"
+
+    - name: Run tests
+      run: DOTENV_CONFIG_PATH=.env npx jest --setupFiles dotenv/config --runInBand --forceExit
+      env:
+        MONGODB_URI: mongodb://localhost:27017/test
+        API_SECRET: test_secret_key_for_ci
+        DOTENV_CONFIG_PATH: .env
+        PORT: 3000
+        BASE_URL: http://127.0.0.1
+        URL_POSTFIX: ""
+
+    - name: Show server log after tests
+      if: always()
+      run: |
+        echo "=== Server Log ==="
+        cat server.log || echo "No server log found"
+        if [ -f server.pid ]; then
+          SERVER_PID=$(cat server.pid)
+          echo "Server PID was: $SERVER_PID"
+          ps -p $SERVER_PID || echo "Server process is not running"
+        fi
+
+    - name: Generate coverage report
+      run: DOTENV_CONFIG_PATH=.env npx jest --setupFiles dotenv/config --coverage --runInBand --forceExit
+      env:
+        MONGODB_URI: mongodb://localhost:27017/test
+        API_SECRET: test_secret_key_for_ci
+        DOTENV_CONFIG_PATH: .env
+        PORT: 3000
+        BASE_URL: http://127.0.0.1
+        URL_POSTFIX: ""
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-report
+        path: reports/lo3/coverage/
+        retention-days: 90
+
+    - name: Display coverage summary
+      if: always()
+      run: |
+        if [ -f reports/lo3/coverage/coverage-summary.json ]; then
+          echo "=== Coverage Summary ==="
+          cat reports/lo3/coverage/coverage-summary.json
+        fi

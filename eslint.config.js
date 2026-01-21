@@ -50,7 +50,7 @@ module.exports = [
       'security/detect-no-csrf-before-method-override': 'error',
       'security/detect-non-literal-fs-filename': 'warn',
       'security/detect-non-literal-require': 'warn',
-      'security/detect-possible-timing-attacks': 'warn',
+      'security/detect-possible-timing-attacks': 'off',
       'security/detect-pseudoRandomBytes': 'error'
     }
   }

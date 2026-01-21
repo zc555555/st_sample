@@ -46,6 +46,13 @@ module.exports = (app) => {
   /* Authenticate a user. */
   app.post("/login", async (req, res) => {
     try{
+      // Validate that email and password are strings
+      if (typeof req.body.email !== 'string' || typeof req.body.password !== 'string') {
+        return res.status(400).send({
+          message: "Invalid email or password format."
+        });
+      }
+
       User.findOne({ email: req.body.email }).exec((error, user) => {
         if (error) {
           res.status(500).send({
@@ -60,36 +67,42 @@ module.exports = (app) => {
         }
 
         //Compare passwords.
-        const passwordIsValid = bcrypt.compareSync(
-          req.body.password,
-          user.password
-        );
-        // Checking if password was valid and send response accordingly.
-        if (!passwordIsValid) {
-          return res.status(401).send({
-            accessToken: null,
-            message: "Invalid Password!"
+        try {
+          const passwordIsValid = bcrypt.compareSync(
+            req.body.password,
+            user.password
+          );
+          // Checking if password was valid and send response accordingly.
+          if (!passwordIsValid) {
+            return res.status(401).send({
+              accessToken: null,
+              message: "Invalid Password!"
+            });
+          }
+          //signing token with user id (utilizing API secret).
+          const token = jwt.sign({
+            id: user.id
+          }, process.env.API_SECRET, {
+            expiresIn: 86400
+          });
+
+          // Responding to client request with user profile success message.
+          res.status(200)
+            .send({
+              user: {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+                name: user.name,
+              },
+              message: "Login successfull",
+              accessToken: token,
+            });
+        } catch (_bcryptError) {
+          return res.status(400).send({
+            message: "Invalid email or password format."
           });
         }
-        //signing token with user id (utilizing API secret).
-        const token = jwt.sign({
-          id: user.id
-        }, process.env.API_SECRET, {
-          expiresIn: 86400
-        });
-
-        // Responding to client request with user profile success message.
-        res.status(200)
-          .send({
-            user: {
-              id: user._id,
-              email: user.email,
-              role: user.role,
-              name: user.name,
-            },
-            message: "Login successfull",
-            accessToken: token,
-          });
       });
     } catch(error) {
       console.log(error);
