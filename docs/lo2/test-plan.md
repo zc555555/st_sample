@@ -54,12 +54,13 @@ This test plan prioritises critical requirements, defines scaffolding and instru
 ### 4.1 Docker Compose Environment
 - `st-sample` service (port 3000) + `mongo` (port 27017) on network `mynetwork`
 - **Entry criteria:** Containers running and reachable
-- **Evidence:** https://github.com/zc555555/st_sample/reports/lo2/common/docker-compose-ps.txt
+- **Evidence:** 
+https://github.com/zc555555/st_sample/blob/main/reports/lo2/common/docker-compose-ps.txt
 
 ### 4.2 Test Container
 - Dedicated test image (`TestDockerfile`) on `mynetwork` for DB access
 - **Exit criteria:** Jest completes, DB cleanup runs, stable repeated execution
-- **Evidence:** https://github.com/zc555555/st_sample/reports/lo2/diagnostics-on/testdocker-jest.txt
+- **Evidence:** https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-on/testdocker-jest.txt
 
 ### 4.3 Evidence Capture
 All outputs captured under `reports/lo2/`:
@@ -125,9 +126,9 @@ All outputs captured under `reports/lo2/`:
 
 | State | Headers | Logs |
 |-------|---------|------|
-| Diagnostics OFF | [healthcheck-headers.txt](https://github.com/zc555555/st_sample/reports/lo2/diagnostics-off/healthcheck-headers.txt) | [st-sample-logs.txt](https://github.com/zc555555/st_sample/reports/lo2/diagnostics-off/st-sample-logs.txt) |
-| Diagnostics ON | [healthcheck-headers.txt](https://github.com/zc555555/st_sample/reports/lo2/diagnostics-on/healthcheck-headers.txt) (shows headers) | [st-sample-logs.txt](https://github.com/zc555555/st_sample/reports/lo2/diagnostics-on/st-sample-logs.txt) (JSON with matching requestId) |
-| Regression | - | [testdocker-jest.txt](https://github.com/zc555555/st_sample/reports/lo2/diagnostics-on/testdocker-jest.txt) |
+| Diagnostics OFF | [healthcheck-headers.txt](https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-off/healthcheck-headers.txt) | [st-sample-logs.txt](https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-off/st-sample-logs.txt) |
+| Diagnostics ON | [healthcheck-headers.txt](https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-on/healthcheck-headers.txt) (shows headers) | [st-sample-logs.txt](https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-on/st-sample-logs.txt) (JSON with matching requestId) |
+| Regression | - | [testdocker-jest.txt](https://github.com/zc555555/st_sample/blob/main/reports/lo2/diagnostics-on/testdocker-jest.txt) |
 
 **Potential Improvements:**
 - Export artefacts as CI build artifacts

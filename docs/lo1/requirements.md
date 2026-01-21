@@ -98,6 +98,3 @@ Note: These targets are **baseline targets** measured on the local Docker enviro
 
 ---
 
-## 9. Notes
-- UI usability testing is out of scope because this is an API-only system.
-- Requirements will be refined if the implementation evolves during the coursework.
