@@ -231,7 +231,7 @@ expect([200, 201]).toContain(response.status);
 
 **Measurement:** Jest coverage report (`--coverage` flag)
 
-**Evidence:** `reports/lo3/coverage-summary.txt`, `reports/lo3/coverage/lcov-report/index.html`
+**Evidence:** `reports/lo3/coverage/`, `reports/lo3/test-run-baseline.txt`
 
 **How this increases confidence:**
 - **Uncovered statements** likely contain untested code paths → potential faults
@@ -255,7 +255,7 @@ expect([200, 201]).toContain(response.status);
 - User exists in DB? (true/false)
 - User has required role? (true/false)
 
-**Evidence:** Branch coverage in Jest HTML report (`reports/lo3/coverage/lcov-report/middleware/authMiddleware.js.html`)
+**Evidence:** Branch coverage in Jest HTML report (`reports/lo3/coverage/`)
 
 **How this increases confidence:**
 - **Unexecuted branches** represent untested conditions → high fault risk
@@ -299,7 +299,7 @@ expect([200, 201]).toContain(response.status);
 
 **Measurement:** Checklist verification (manual inspection of test suite)
 
-**Evidence:** State coverage matrix in `docs/lo3/techniques-and-rationale.md` Section 5.4
+**Evidence:** State coverage verified in test suite `__tests__/api/api.users-*.test.js`
 
 **How this increases confidence:**
 - **Every reachable state is tested** → no unvalidated state
@@ -322,7 +322,7 @@ expect([200, 201]).toContain(response.status);
 
 **Target:** ≥5/6 = 83% (exceeds 90% if implicit transition counting varies)
 
-**Evidence:** Transition coverage matrix in `docs/lo3/techniques-and-rationale.md` Section 5.5
+**Evidence:** Transition coverage verified in test suite `__tests__/api/api.users-*.test.js`
 
 **How this increases confidence:**
 - **Transitions represent state changes** → critical for stateful behavior
@@ -364,9 +364,9 @@ expect([200, 201]).toContain(response.status);
 
 **Target:** 52/52 = 100% ACM coverage
 
-**Measurement:** Checklist in `docs/lo3/techniques-and-rationale.md` Section 6.3
+**Measurement:** Systematic verification across test files
 
-**Evidence:** Test suite covers all 52 cells across 3 test files
+**Evidence:** Test suite covers all 52 cells across files in `__tests__/api/`
 
 **How this increases confidence:**
 - **Systematic coverage** ensures no endpoint is accidentally left unprotected
@@ -390,7 +390,7 @@ expect([200, 201]).toContain(response.status);
 
 **Target:** 32/32 correctly rejected (100% negative test success rate)
 
-**Evidence:** Negative test results in `reports/lo3/test-results.txt`
+**Evidence:** Negative test results in `reports/lo3/test-run-baseline.txt`
 
 **How this increases confidence:**
 - **High yield = many vulnerabilities prevented**
@@ -429,7 +429,7 @@ expect([200, 201]).toContain(response.status);
 
 **Measurement:** Artillery performance report
 
-**Evidence:** `reports/lo3/performance-results.txt`
+**Evidence:** `reports/lo3/PERFORMANCE-TEST-RESULTS.md`
 
 **How this increases confidence:**
 - **p95 captures tail latency** (not just averages) → realistic user experience
@@ -449,7 +449,7 @@ expect([200, 201]).toContain(response.status);
 
 **Measurement:** Artillery error rate metric
 
-**Evidence:** `reports/lo3/performance-results.txt`
+**Evidence:** `reports/lo3/PERFORMANCE-TEST-RESULTS.md`
 
 **How this increases confidence:**
 - **Low error rate** indicates system is stable under load
@@ -506,10 +506,3 @@ Even with high adequacy scores:
 
 ---
 
-## 9. References
-
-- **Requirement specification:** [docs/lo1/requirements.md](../lo1/requirements.md)
-- **Test plan:** [docs/lo2/test-plan.md](../lo2/test-plan.md)
-- **Testing techniques:** [docs/lo3/techniques-and-rationale.md](techniques-and-rationale.md)
-- **Test results:** [reports/lo3/test-results.txt](../../reports/lo3/test-results.txt)
-- **Coverage report:** [reports/lo3/coverage-summary.txt](../../reports/lo3/coverage-summary.txt)
