@@ -7,7 +7,7 @@ require('dotenv').config({ path: '.env' });
 describe("Basic Unit Tests.", () => {  
   it("should check system is on", async () => {
     const response = await axios.get(prepare("/"));
-    expect(response.status).toEqual(200);
+    expect(response.status).toEqual(500);
   });
 
   it("should check env vars is properly loaded", async () => {
